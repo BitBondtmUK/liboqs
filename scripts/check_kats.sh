@@ -11,7 +11,7 @@ PRINT_RESET="tput sgr 0"
 RET=0
 
 ALGS=`grep -E 'define OQS_(KEM)_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
-ALGS+=` grep -E 'OQS_(SIG)_algid_' src/sig/sig.h | grep -v 'default' | sed -e 's/^\(.*\)_algid_\(.*\),/\2/'| sed -e 's/^\(p\)\(+*\)/\U\1\2/'`
+ALGS+=`grep -E 'OQS_(SIG)_algid_' src/sig/sig.h | grep -v 'default' | sed -e 's/^\(.*\)_algid_\(.*\),/\2/'| sed -e 's/^\(p\)\(+*\)/ \U\1\2/'`
 
 for alg in ${ALGS}; do
 
