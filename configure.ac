@@ -203,6 +203,7 @@ if test x"$sig_picnic" = x"true"; then
   SRCDIR=${SRCDIR}" src/sig_picnic"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIG_PICNIC"
   AC_DEFINE(ENABLE_SIG_PICNIC, 1, "Define to 1 when PICNIC enabled")
+  AC_DEFINE(OQS_ENABLE_SIG_picnic_L1_FS, 1, "Define to 1 when PICNIC enabled")
 fi
 
 if test x"$sig_qtesla" = x"true"; then

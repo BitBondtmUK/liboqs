@@ -19,7 +19,7 @@
 #include "io.h"
 #include "lowmc.h"
 #include "picnic_impl.h"
-#include <oqs/rand.h>
+#include "randomness.h"
 
 const picnic_instance_t* picnic_instance_get(picnic_params_t param) {
   return oqs_sig_picnic_get_instance(param);
@@ -53,7 +53,7 @@ size_t PICNIC_CALLING_CONVENTION picnic_get_public_key_size(picnic_params_t para
 }
 
 int PICNIC_CALLING_CONVENTION picnic_keygen(picnic_params_t param, picnic_publickey_t* pk,
-                                            picnic_privatekey_t* sk, OQS_RAND* rand) {
+                                            picnic_privatekey_t* sk) {
 
   if (!pk || !sk) {
     return -1;
@@ -73,10 +73,13 @@ int PICNIC_CALLING_CONVENTION picnic_keygen(picnic_params_t param, picnic_public
 
   // generate private key
   sk->data[0] = param;
-  // random secret key
-  OQS_RAND_n(rand, sk_sk, input_size);
+  if (!rand_bytes(sk_sk, input_size)) {
+    return -1;
+  }
   // random plain text
-  OQS_RAND_n(rand, pk_pt, output_size);
+  if (!rand_bytes(pk_pt, output_size)) {
+    return -1;
+  }
   // encrypt plaintext under secret key
   if (picnic_sk_to_pk(sk, pk)) {
     return -1;

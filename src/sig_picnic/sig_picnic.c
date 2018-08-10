@@ -4,7 +4,6 @@
 
 #include <string.h>
 #include <oqs/common.h>
-#include <oqs/rand.h>
 #include "sig_picnic.h"
 #include "external/picnic.h"
 
@@ -57,38 +56,38 @@ OQS_STATUS OQS_SIG_picnic_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	// NOTE: the key and sig len values use macros, so we can't
 	//       parametrized with pctx->params to shorten the code.
 	switch (algid) {
-	case OQS_SIG_default:
-	case OQS_SIG_picnic_L1_FS:
+	case OQS_SIG_algid_default:
+	case OQS_SIG_algid_picnic_L1_FS:
 		pctx->params = Picnic_L1_FS;
 		s->method_name = Picnic_L1_FS_name;
 		s->estimated_classical_security = 128;
 		s->estimated_quantum_security = 64;
 		break;
-	case OQS_SIG_picnic_L1_UR:
+	case OQS_SIG_algid_picnic_L1_UR:
 		pctx->params = Picnic_L1_UR;
 		s->method_name = Picnic_L1_UR_name;
 		s->estimated_classical_security = 128;
 		s->estimated_quantum_security = 64;
 		break;
-	case OQS_SIG_picnic_L3_FS:
+	case OQS_SIG_algid_picnic_L3_FS:
 		pctx->params = Picnic_L3_FS;
 		s->method_name = Picnic_L3_FS_name;
 		s->estimated_classical_security = 192;
 		s->estimated_quantum_security = 96;
 		break;
-	case OQS_SIG_picnic_L3_UR:
+	case OQS_SIG_algid_picnic_L3_UR:
 		pctx->params = Picnic_L3_UR;
 		s->method_name = Picnic_L3_UR_name;
 		s->estimated_classical_security = 192;
 		s->estimated_quantum_security = 96;
 		break;
-	case OQS_SIG_picnic_L5_FS:
+	case OQS_SIG_algid_picnic_L5_FS:
 		pctx->params = Picnic_L5_FS;
 		s->method_name = Picnic_L5_FS_name;
 		s->estimated_classical_security = 256;
 		s->estimated_quantum_security = 128;
 		break;
-	case OQS_SIG_picnic_L5_UR:
+	case OQS_SIG_algid_picnic_L5_UR:
 		pctx->params = Picnic_L5_UR;
 		s->method_name = Picnic_L5_UR_name;
 		s->estimated_classical_security = 256;
@@ -117,7 +116,7 @@ OQS_STATUS OQS_SIG_picnic_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) 
 	picnic_publickey_t pk;
 	picnic_privatekey_t sk;
 	picnic_params_t parameters = ((PICNIC_CTX *) s->ctx)->params;
-	int ret = picnic_keygen(parameters, &pk, &sk, s->rand);
+	int ret = picnic_keygen(parameters, &pk, &sk);
 	if (ret != 0) { // DO NOT modify this return code to OQS_SUCCESS/OQS_ERROR
 		return OQS_ERROR;
 	}

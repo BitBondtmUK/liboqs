@@ -91,10 +91,10 @@ if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3 kat_kem
+noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3 kat_kem kat_sig
 
 if USE_SIG_PICNIC
-noinst_bin_PROGRAMS += minimal_sig_oqs
+#noinst_bin_PROGRAMS += minimal_sig_oqs
 endif
 
 noinst_bindir=$(prefix)/tests
@@ -142,15 +142,15 @@ if USE_OPENSSL
 test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
-if USE_SIG_PICNIC
-minimal_sig_oqs_LDADD =  liboqs.la -lm -lcrypto
-minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
-minimal_sig_oqs_CPPFLAGS = -I./include
-minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_OPENSSL
-minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-endif # USE_SIG_PICNIC
+#if USE_SIG_PICNIC
+#minimal_sig_oqs_LDADD =  liboqs.la -lm -lcrypto
+#minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
+#minimal_sig_oqs_CPPFLAGS = -I./include
+#minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
+#if USE_OPENSSL
+#minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+#endif
+#endif # USE_SIG_PICNIC
 
 test_aes_LDADD =  liboqs.la -lm -lcrypto
 test_aes_SOURCES = src/crypto/aes/test_aes.c
@@ -184,6 +184,12 @@ kat_kem_SOURCES = src/kem/kat_kem.c
 kat_kem_CPPFLAGS = -I./include
 kat_kem_CPPFLAGS += $(AM_CPPFLAGS)
 
+kat_sig_LDADD =  liboqs.la -lcrypto
+kat_sig_SOURCES = src/sig/kat_sig.c
+kat_sig_CPPFLAGS = -I./include
+kat_sig_CPPFLAGS += $(AM_CPPFLAGS)
+
+
 test: clean-tests
 	make
 	./example_kem
@@ -194,10 +200,11 @@ test: clean-tests
 	./test_sha3
 	./test_sig
 if USE_SIG_PICNIC
-	./minimal_sig_oqs
+#	./minimal_sig_oqs
 endif
 
-kat: kats
+kat:
+	make	
 	./kat_kem
 	./kat_sig
 	scripts/check_kats.sh
@@ -236,7 +243,7 @@ clean-local:
 	rm -f liboqs.a
 	rm -rf include
 if USE_SIG_PICNIC
-	rm -f minimal_sig_oqs
+#	rm -f minimal_sig_oqs
 endif
 
 clean-tests:

@@ -9,26 +9,22 @@
 #include <oqs/sig_qtesla.h>
 #endif
 
-OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
-	if (rand == NULL) {
-		return NULL;
-	}
+OQS_SIG *OQS_SIG_new(enum OQS_SIG_algid algid) {
 
 	OQS_SIG *s = malloc(sizeof(OQS_SIG));
 	if (s == NULL) {
 		return NULL;
 	}
-	s->rand = rand;
 
 	switch (algid) {
 #ifdef ENABLE_SIG_PICNIC
-	case OQS_SIG_picnic_L1_FS:
-	case OQS_SIG_picnic_L1_UR:
-	case OQS_SIG_picnic_L3_FS:
-	case OQS_SIG_picnic_L3_UR:
-	case OQS_SIG_picnic_L5_FS:
-	case OQS_SIG_picnic_L5_UR:
-	case OQS_SIG_default:
+	case OQS_SIG_algid_picnic_L1_FS:
+	case OQS_SIG_algid_picnic_L1_UR:
+	case OQS_SIG_algid_picnic_L3_FS:
+	case OQS_SIG_algid_picnic_L3_UR:
+	case OQS_SIG_algid_picnic_L5_FS:
+	case OQS_SIG_algid_picnic_L5_UR:
+	case OQS_SIG_algid_default:
 		if (OQS_SIG_picnic_get(s, algid) != OQS_SUCCESS) {
 			free(s);
 			return NULL;
@@ -36,9 +32,9 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 		break;
 #endif
 #ifdef ENABLE_SIG_QTESLA
-	case OQS_SIG_qTESLA_I:
-	case OQS_SIG_qTESLA_III_speed:
-	case OQS_SIG_qTESLA_III_size:
+	case OQS_SIG_algid_qTESLA_I:
+	case OQS_SIG_algid_qTESLA_III_speed:
+	case OQS_SIG_algid_qTESLA_III_size:
 		if (OQS_SIG_qTESLA_get(s, algid) != OQS_SUCCESS) {
 			free(s);
 			return NULL;

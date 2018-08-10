@@ -25,18 +25,18 @@
  *       compiled without the macro fails if these algid are requested.
  */
 enum OQS_SIG_algid {
-	OQS_SIG_default, // equivalent to OQS_SIG_picnic_L1_FS
+	OQS_SIG_algid_default, // equivalent to OQS_SIG_picnic_L1_FS
 	/* Picnic sig algs */
-	OQS_SIG_picnic_L1_FS,
-	OQS_SIG_picnic_L1_UR,
-	OQS_SIG_picnic_L3_FS,
-	OQS_SIG_picnic_L3_UR,
-	OQS_SIG_picnic_L5_FS,
-	OQS_SIG_picnic_L5_UR,
+	OQS_SIG_algid_picnic_L1_FS,
+	OQS_SIG_algid_picnic_L1_UR,
+	OQS_SIG_algid_picnic_L3_FS,
+	OQS_SIG_algid_picnic_L3_UR,
+	OQS_SIG_algid_picnic_L5_FS,
+	OQS_SIG_algid_picnic_L5_UR,
 	/* qTesla sig algs */
-	OQS_SIG_qTESLA_I,
-	OQS_SIG_qTESLA_III_speed,
-	OQS_SIG_qTESLA_III_size,
+	OQS_SIG_algid_qTESLA_I,
+	OQS_SIG_algid_qTESLA_III_speed,
+	OQS_SIG_algid_qTESLA_III_size,
 };
 
 /**
@@ -44,11 +44,6 @@ enum OQS_SIG_algid {
  */
 typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
 struct OQS_SIG {
-
-	/**
-	 * PRNG
-	 */
-	OQS_RAND *rand;
 
 	/**
 	 * Specifies the name of the signature method
@@ -137,11 +132,10 @@ struct OQS_SIG {
 /**
  * Instantiate a new signature object.
  *
- * @param rand               The random number generator.
  * @param algid              The id of the signature algorithm to be instantiated.
  * @return                   A new signature object on success, or NULL on failure.
  */
-OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
+OQS_SIG *OQS_SIG_new(enum OQS_SIG_algid algid);
 
 /**
  * Generates a new signature key pair.
@@ -180,7 +174,6 @@ OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *m
 
 /**
  * Frees the signature object, de-initializing the underlying library code.
- * Does NOT free the rand object passed to OQS_SIG_new.
  * @param s          The signature object.
  */
 void OQS_SIG_free(OQS_SIG *s);
