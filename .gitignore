@@ -42,6 +42,10 @@ include
 /test_sha3
 /minimal_kex_oqs
 /minimal_sig_oqs
+/kat_sig
+/kat_kem
+kat_kem_rsp
+kat_sig_rsp
 
 # Debug files
 *.dSYM/
